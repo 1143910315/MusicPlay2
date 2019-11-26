@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MusicPlay2": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
