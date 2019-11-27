@@ -7,6 +7,73 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="167*"/>
+            <ColumnDefinition Width="634*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="277*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="3"></ListBox>
+        <ListBox Grid.Row="0" Grid.Column="1" Margin="3"></ListBox>
+        <DockPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" >
+            <TextBlock DockPanel.Dock="Left" Text="00:00" Margin="20,0,20,0"/>
+            <TextBlock DockPanel.Dock="Right" Text="00:00" Margin="20,0,20,0"/>
+            <Slider Maximum="500" Value="0" IsMoveToPointEnabled="True" IsTabStop="False"/>
+        </DockPanel>
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" Width="50" Height="50">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M256 896V128h128v352l320-320v704l-320-320V896z"></Path>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" Width="50" Height="50">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M192 128l640 384-640 384z"></Path>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" Width="50" Height="50" Visibility="Hidden">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M128 128h320v768H128z m448 0h320v768H576z"></Path>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2" Width="50" Height="50">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M768 128v768h-128V544l-320 320v-704l320 320V128z"></Path>
+                </Viewbox>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" Width="20" Height="20">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M992 384H640V32a32 32 0 0 0-32-32h-192a32 32 0 0 0-32 32V384H32a32 32 0 0 0-32 32v192a32 32 0 0 0 32 32H384v352a32 32 0 0 0 32 32h192a32 32 0 0 0 32-32V640h352a32 32 0 0 0 32-32v-192a32 32 0 0 0-32-32z"></Path>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" Width="20" Height="20">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M576 256L448 128H0v832h1024V256H576z m128 448H576v128H448v-128H320V576h128V448h128v128h128v128z"></Path>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2" Width="20" Height="20">
+                <Viewbox>
+                    <Path Width="1024" Height="1024" Fill="Blue" Data="M192 1024h640l64-704H128z m448-896V0H384v128H64v192l64-64h768l64 64V128h-320zM576 128H448V64h128v64z"></Path>
+                </Viewbox>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
