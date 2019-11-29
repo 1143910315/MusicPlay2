@@ -130,6 +130,11 @@ namespace MusicPlay2.Music {
                     long previous = operationFileStream.Position;
                     SampleData sampleData = RawDeserializeFromFileStream<SampleData>(operationFileStream);
                     if (sampleData.dataId == 2 && sampleData.dataLength >= needLength && !found) {
+                        long now = operationFileStream.Position;
+                        operationFileStream.Position = previous;
+                        byte[] b = RawSerialize(id);
+                        operationFileStream.Write(b, 0, b.Length);
+                        operationFileStream.Position = now;
                         found = true;
                         writePosition = operationFileStream.Position;
                     }
@@ -152,6 +157,73 @@ namespace MusicPlay2.Music {
                 } else {
                     operationFileStream.Write(RawSerialize(new SampleData() { dataId = id, dataLength = (uint)needLength }));
                 }
+            } else {
+                throw new Exception("无法写入文件！");
+            }
+        }
+        public uint Append(string parameter, List<object> list) {
+            List<byte> byteSource = new List<byte>();
+            string temp = parameter;
+            int i = 0;
+            while (temp.Length > 0) {
+                if (temp.StartsWith("S")) {
+                    byte[] tempByte = Encoding.Unicode.GetBytes(list[i++].ToString());
+                    byteSource.AddRange(RawSerialize(tempByte.Length));
+                    byteSource.AddRange(tempByte);
+                    temp = temp[1..];
+                } else if (temp.StartsWith("I")) {
+                    byteSource.AddRange(RawSerialize(list[i++]));
+                    temp = temp[1..];
+                }
+            }
+            uint id = MoveNextWrite(byteSource.Count);
+            operationFileStream.Write(byteSource.ToArray(), 0, byteSource.Count);
+            return id;
+        }
+        private uint MoveNextWrite(int needLength) {
+            if (version == 1) {
+                _ = operationFileStream.Seek(startPosition, SeekOrigin.Begin);
+                HashSet<uint> set = new HashSet<uint>();
+                Random random = new Random();
+                uint maxRange = 255;
+                bool found = false;
+                long idPosition = 0;
+                long writePosition = 0;
+                while (operationFileStream.Position < operationFileStream.Length) {
+                    long previous = operationFileStream.Position;
+                    SampleData sampleData = RawDeserializeFromFileStream<SampleData>(operationFileStream);
+                    if (sampleData.dataId == 2 && sampleData.dataLength >= needLength && !found) {
+                        found = true;
+                        idPosition = previous;
+                        writePosition = operationFileStream.Position;
+                    }
+                    if (sampleData.dataId > maxRange) {
+                        long times = sampleData.dataId - maxRange - 1;
+                        times = Math.Min(10, times);
+                        for (long i = 0; i < times; i++) {
+                            long c = sampleData.dataId - maxRange - 1;
+                            long d = (long)Math.Floor(random.NextDouble() * c) + maxRange + 1;
+                            uint number = (uint)d;
+                            set.Add(number);
+                        }
+                        maxRange = sampleData.dataId;
+                    }
+                    _ = set.Remove(sampleData.dataId);
+                    _ = operationFileStream.Seek(sampleData.dataLength, SeekOrigin.Current);
+                }
+                uint id = maxRange + 1;
+                if (set.Count > 0) {
+                    id = set.First();
+                }
+                if (found) {
+                    operationFileStream.Position = idPosition;
+                    byte[] b = RawSerialize(id);
+                    operationFileStream.Write(b, 0, b.Length);
+                    operationFileStream.Position = writePosition;
+                } else {
+                    operationFileStream.Write(RawSerialize(new SampleData() { dataId = id, dataLength = (uint)needLength }));
+                }
+                return id;
             } else {
                 throw new Exception("无法写入文件！");
             }
