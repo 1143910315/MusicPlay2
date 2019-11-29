@@ -47,7 +47,6 @@ namespace MusicPlay2.Music {
                 return instance;
             }
         }
-
         //id为0时，移动到文件最开始
         //id为1时，检查文件是否包含错误
         //id为2时，表示该块删除
