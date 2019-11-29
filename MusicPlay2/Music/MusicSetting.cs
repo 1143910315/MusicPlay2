@@ -7,17 +7,18 @@ using System.Text;
 
 namespace MusicPlay2.Music {
     public class MusicSetting {
+        private static MusicSetting instance;
         private FileInfo fileInfoA = new FileInfo("settingA.set");//原版配置文件
         private FileInfo fileInfoB = new FileInfo("settingB.set");//中间修改配置文件
         private FileInfo fileInfoC = new FileInfo("settingC.set");//原版配置文件的备份
         private FileStream operationFileStream;
-        private long startPosition;
-        private uint version;
+        private readonly long startPosition;
+        private readonly uint version;
         private struct SampleData {
             public uint dataId;
             public uint dataLength;
         }
-        public MusicSetting() {
+        private MusicSetting() {
             if (!fileInfoA.Exists && !fileInfoB.Exists && !fileInfoC.Exists) {
                 FileStream temp = fileInfoA.Create();
                 byte[] fileSign = Encoding.ASCII.GetBytes("Sv0001");
@@ -37,6 +38,12 @@ namespace MusicPlay2.Music {
                     }
                 }
             }
+        }
+        public static MusicSetting GetInstance() {
+            if (instance == null) {
+                instance = new MusicSetting();
+            }
+            return instance;
         }
         //id为0时，移动到文件最开始
         //id为1时，检查文件是否包含错误
