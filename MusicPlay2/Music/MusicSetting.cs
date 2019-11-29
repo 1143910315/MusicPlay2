@@ -228,6 +228,27 @@ namespace MusicPlay2.Music {
                 throw new Exception("无法写入文件！");
             }
         }
+        public void Delete(uint id) {
+            DeleteId(id);
+        }
+        private void DeleteId(uint id) {
+            if (version == 1) {
+                _ = operationFileStream.Seek(startPosition, SeekOrigin.Begin);
+                while (operationFileStream.Position < operationFileStream.Length) {
+                    long previous = operationFileStream.Position;
+                    SampleData sampleData = RawDeserializeFromFileStream<SampleData>(operationFileStream);
+                    if (id == sampleData.dataId) {
+                        long now = operationFileStream.Position;
+                        operationFileStream.Position = previous;
+                        byte[] b = RawSerialize(2);
+                        operationFileStream.Write(b, 0, b.Length);
+                        operationFileStream.Position = now;
+                    }
+                }
+            } else {
+                throw new Exception("无法写入文件！");
+            }
+        }
         public bool HasData() {
             return operationFileStream.Length > operationFileStream.Position;
         }
