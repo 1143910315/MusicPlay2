@@ -39,12 +39,15 @@ namespace MusicPlay2.Music {
                 }
             }
         }
-        public static MusicSetting GetInstance() {
-            if (instance == null) {
-                instance = new MusicSetting();
+        public static MusicSetting Instance {
+            get {
+                if (instance == null) {
+                    instance = new MusicSetting();
+                }
+                return instance;
             }
-            return instance;
         }
+
         //id为0时，移动到文件最开始
         //id为1时，检查文件是否包含错误
         //id为2时，表示该块删除

@@ -9,7 +9,7 @@ namespace MusicPlay2.Music.Tests {
     public class MusicSettingTests {
         [TestMethod()]
         public void WriteTest() {
-            MusicSetting musicSetting = MusicSetting.GetInstance();
+            MusicSetting musicSetting = MusicSetting.Instance;
             List<object> list = new List<object> {
                 "test1文本",
                 9000,
@@ -22,7 +22,7 @@ namespace MusicPlay2.Music.Tests {
 
         [TestMethod()]
         public void ReadTest() {
-            MusicSetting musicSetting = MusicSetting.GetInstance();
+            MusicSetting musicSetting = MusicSetting.Instance;
             Assert.AreEqual(true, musicSetting.MovePositionById(800));
             (uint id, List<object> list) = musicSetting.Read("SIIS");
             Assert.AreEqual(800U, id);

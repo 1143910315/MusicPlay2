@@ -8,7 +8,7 @@ namespace MusicPlay2.Music {
         private static MusicGroup instance;
         private readonly Hashtable musicLists;
         private MusicGroup() {
-            MusicSetting musicSetting = MusicSetting.GetInstance();
+            MusicSetting musicSetting = MusicSetting.Instance;
             musicLists = new Hashtable();
             _ = musicSetting.MovePositionById(0);
             while (musicSetting.HasData()) {
@@ -20,11 +20,13 @@ namespace MusicPlay2.Music {
                 }
             }
         }
-        public static MusicGroup GetInstance() {
-            if (instance == null) {
-                instance = new MusicGroup();
+        public static MusicGroup Instance {
+            get {
+                if (instance == null) {
+                    instance = new MusicGroup();
+                }
+                return instance;
             }
-            return instance;
         }
     }
 }
